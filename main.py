@@ -45,7 +45,8 @@ def ecer():
 
 def main():
     frame.title("Basilisk")
-    frame.geometry('300x225')
+    frame.geometry('225x200')
+    frame.resizable(False, False)
     photo = tk.PhotoImage(file='ico.png')
     frame.wm_iconphoto(False, photo)
     encodelabel = tk.Label(frame, height=1, text="Encode(e) or Decode (d)")
