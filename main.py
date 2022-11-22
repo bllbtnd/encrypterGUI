@@ -9,6 +9,7 @@ filename = None
 password_provided = None
 eod = "e"
 key = None
+showpasswordbool = False
 frame = tk.Tk()
 def passhandler():
     password = password_provided.encode()
@@ -40,8 +41,6 @@ def ecer():
         with open(filename, 'wb') as dec_file:
             dec_file.write(decrypted)
         print('Done!')
-    global end
-    end = True
 def main():
     def changebutton():
         global eod
@@ -53,6 +52,15 @@ def main():
             encodebutton.config(text="Encrypt")
             eod = "e"
             print("Program was set to encrypt")
+    def showpw():
+        global showpasswordbool
+        if not showpasswordbool:
+            pw.config(show="")
+            showpasswordbool = True
+        else:
+            pw.config(show="*")
+            showpasswordbool = False
+
     frame.title("Basilisk")
     frame.resizable(False, False)
     photo = tk.PhotoImage(file='ico.png')
@@ -62,18 +70,20 @@ def main():
     filenamelabel = tk.Label(frame, height=1, text="The path to your file:")
     passwordlabel = tk.Label(frame, height=1, text="Password:")
     fname = tk.Entry(frame, width=20)
+    showbutton = tk.Button(frame, height=1, text="👁️", command=showpw)
     pw = tk.Entry(frame, show="*", width=20)
-    encodebutton.grid(row=0, column=0, columnspan=2)
+    encodebutton.grid(row=0, column=0, columnspan=4)
     filenamelabel.grid(row=1, column=0)
-    fname.grid(row=1, column=1)
+    fname.grid(row=1, column=1, columnspan=3)
     passwordlabel.grid(row=2, column=0, ipadx=10)
-    pw.grid(row=2, column=1)
+    pw.grid(row=2, column=1, columnspan=3)
     def savethevalues():
         global filename, password_provided
         filename = fname.get()
         password_provided = pw.get()
         passhandler()
     button = tk.Button(frame, text="Encrypt/Decript", command=savethevalues)
-    button.grid(row=3, column=0, columnspan=2)
+    button.grid(row=3, column=0, columnspan=4)
+    showbutton.grid(row=3, column=3, sticky="E")
     frame.mainloop()
 main()
