@@ -7,7 +7,7 @@ from cryptography.fernet import Fernet
 
 filename = None
 password_provided = None
-eod = None
+eod = "e"
 key = None
 frame = tk.Tk()
 def passhandler():
@@ -42,33 +42,38 @@ def ecer():
         print('Done!')
     global end
     end = True
-
 def main():
+    def changebutton():
+        global eod
+        if encodebutton.cget('text') == "Encrypt":
+            encodebutton.config(text="Decrypt")
+            eod = "d"
+            print("Program was set to decrypt")
+        else:
+            encodebutton.config(text="Encrypt")
+            eod = "e"
+            print("Program was set to encrypt")
     frame.title("Basilisk")
-    frame.geometry('225x200')
     frame.resizable(False, False)
     photo = tk.PhotoImage(file='ico.png')
     frame.wm_iconphoto(False, photo)
-    encodelabel = tk.Label(frame, height=1, text="Encode(e) or Decode (d)")
-    filenamelabel = tk.Label(frame, height=1, text="The path to your file")
-    passwordlabel = tk.Label(frame, height=1, text="Password")
-    encodecr = tk.Text(frame, height=1, width=20)
-    fname = tk.Text(frame, height=1, width=20)
-    pw = tk.Text(frame, height=1, width=20)
-    encodelabel.pack()
-    encodecr.pack()
-    filenamelabel.pack()
-    fname.pack()
-    passwordlabel.pack()
-    pw.pack()
-
+    frame.rowconfigure(1, weight=1)
+    encodebutton = tk.Button(frame, height=1, text="Encrypt", command=changebutton)
+    filenamelabel = tk.Label(frame, height=1, text="The path to your file:")
+    passwordlabel = tk.Label(frame, height=1, text="Password:")
+    fname = tk.Entry(frame, width=20)
+    pw = tk.Entry(frame, show="*", width=20)
+    encodebutton.grid(row=0, column=0, columnspan=2)
+    filenamelabel.grid(row=1, column=0)
+    fname.grid(row=1, column=1)
+    passwordlabel.grid(row=2, column=0, ipadx=10)
+    pw.grid(row=2, column=1)
     def savethevalues():
-        global eod, filename, password_provided
-        eod = encodecr.get(1.0, "end-1c")
-        filename = fname.get(1.0, "end-1c")
-        password_provided = pw.get(1.0, "end-1c")
+        global filename, password_provided
+        filename = fname.get()
+        password_provided = pw.get()
         passhandler()
     button = tk.Button(frame, text="Encrypt/Decript", command=savethevalues)
-    button.pack()
+    button.grid(row=3, column=0, columnspan=2)
     frame.mainloop()
 main()
